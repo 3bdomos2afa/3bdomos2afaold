@@ -4,14 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abdelrahman | Portfolio</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
 background:#000;
 color:#fff;
-font-family:Arial,Helvetica,sans-serif;
+font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
 overflow-x:hidden;
+}
+
+html,body{
+width:100%;
+height:100%;
 }
 
 .hero{
@@ -22,91 +35,320 @@ align-items:center;
 justify-content:center;
 text-align:center;
 background:linear-gradient(135deg,#000,#0f172a);
+position:relative;
+z-index:10;
+}
+
+#canvas-3d{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0;
+}
+
+.hero-content{
+position:relative;
+z-index:20;
 }
 
 h1{
-font-size:60px;
-background:linear-gradient(to right,#2563eb,#1e40af);
+font-size:clamp(40px,10vw,80px);
+background:linear-gradient(to right,#2563eb,#60a5fa);
 -webkit-background-clip:text;
 color:transparent;
-animation:fade 1.5s ease forwards;
+animation:fadeIn 1.5s ease forwards;
+font-weight:700;
+letter-spacing:-1px;
 }
 
-p{
+.subtitle{
 color:#aaa;
-font-size:20px;
-animation:fade 2s ease forwards;
+font-size:clamp(16px,3vw,24px);
+animation:fadeIn 2s ease forwards;
+margin-top:20px;
+font-weight:300;
 }
 
-button{
-margin-top:30px;
-padding:15px 30px;
-background:#2563eb;
+.cta-btn{
+margin-top:40px;
+padding:16px 40px;
+background:linear-gradient(135deg,#2563eb,#1e40af);
 border:none;
 color:#fff;
-border-radius:8px;
+border-radius:12px;
 cursor:pointer;
-transition:0.3s;
+transition:all 0.3s ease;
+font-size:18px;
+font-weight:600;
+box-shadow:0 10px 30px rgba(37,99,235,0.3);
 }
 
-button:hover{
-background:#1e40af;
-transform:scale(1.05);
+.cta-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 15px 40px rgba(37,99,235,0.5);
 }
 
 .section{
 padding:100px 20px;
 text-align:center;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+background:#000;
+position:relative;
+z-index:10;
+}
+
+.section h2{
+font-size:clamp(32px,8vw,56px);
+margin-bottom:60px;
+background:linear-gradient(to right,#2563eb,#60a5fa);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+.cards-container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+gap:40px;
+max-width:1200px;
+margin:0 auto;
 }
 
 .card{
-background:#0f172a;
-padding:30px;
-margin:20px auto;
-max-width:400px;
-border-radius:12px;
-transition:0.4s;
+background:linear-gradient(135deg,rgba(15,23,42,0.8),rgba(30,64,175,0.1));
+padding:40px;
+border-radius:16px;
+transition:all 0.5s ease;
+border:1px solid rgba(37,99,235,0.2);
+backdrop-filter:blur(10px);
 }
 
 .card:hover{
-transform:translateY(-10px);
-box-shadow:0 0 20px #2563eb;
+transform:translateY(-15px);
+box-shadow:0 20px 60px rgba(37,99,235,0.4);
+border-color:rgba(37,99,235,0.6);
 }
 
-@keyframes fade{
-from{opacity:0;transform:translateY(20px);}
-to{opacity:1;transform:translateY(0);}
+.card h3{
+font-size:24px;
+margin-bottom:15px;
+color:#60a5fa;
+}
+
+.card p{
+color:#aaa;
+line-height:1.6;
+font-size:16px;
+}
+
+.mouse-trail{
+position:fixed;
+width:8px;
+height:8px;
+background:radial-gradient(circle,#2563eb,#1e40af);
+border-radius:50%;
+pointer-events:none;
+z-index:9999;
+box-shadow:0 0 10px rgba(37,99,235,0.6);
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@media (max-width:768px){
+.hero{
+padding:20px;
+}
+
+h1{
+margin-bottom:20px;
+}
+
+.cards-container{
+grid-template-columns:1fr;
+}
+
+.section{
+padding:60px 20px;
+}
 }
 </style>
 </head>
 
 <body>
 
+<canvas id="canvas-3d"></canvas>
+
 <div class="hero">
+<div class="hero-content">
 <h1>Abdelrahman</h1>
-<p>Frontend Developer | Creative Web Experiences</p>
-<button onclick="scrollToSection()">View Projects</button>
+<p class="subtitle">Frontend Developer | Interactive Experiences</p>
+<button class="cta-btn" onclick="scrollToSection()">View Projects</button>
+</div>
 </div>
 
 <div class="section" id="projects">
-<h2>Projects</h2>
-
+<h2>Featured Projects</h2>
+<div class="cards-container">
 <div class="card">
 <h3>AI Tools Directory</h3>
-<p>Advanced UI platform for discovering AI tools.</p>
+<p>Advanced UI platform for discovering and exploring cutting-edge AI tools. Built with modern web technologies for seamless user experience.</p>
 </div>
 
 <div class="card">
 <h3>Prayer Times Web App</h3>
-<p>Modern Islamic web application with clean design.</p>
+<p>Modern Islamic web application with clean design and accurate prayer time calculations. Features intuitive interface and responsive design.</p>
 </div>
-
+</div>
 </div>
 
 <script>
+gsap.registerPlugin(ScrollTrigger);
+
 function scrollToSection(){
-document.getElementById("projects").scrollIntoView({behavior:"smooth"});
+gsap.to(window, {
+scrollTo: { y: "#projects", offsetY: 100 },
+duration: 1,
+ease: "power2.inOut"
+});
 }
+
+const cards = document.querySelectorAll('.card');
+cards.forEach((card, index) => {
+gsap.fromTo(card,
+{ y: 100, opacity: 0 },
+{
+y: 0,
+opacity: 1,
+scrollTrigger: {
+trigger: card,
+start: 'top 85%',
+end: 'top 50%',
+scrub: 1,
+},
+delay: index * 0.1
+}
+);
+});
+
+class MouseTrail {
+constructor() {
+this.x = 0;
+this.y = 0;
+this.trails = [];
+window.addEventListener('mousemove', (e) => this.onMouseMove(e));
+this.animate();
+}
+
+onMouseMove(e) {
+this.x = e.clientX;
+this.y = e.clientY;
+this.createTrail();
+}
+
+createTrail() {
+const trail = document.createElement('div');
+trail.className = 'mouse-trail';
+trail.style.left = this.x + 'px';
+trail.style.top = this.y + 'px';
+document.body.appendChild(trail);
+
+let opacity = 1;
+const interval = setInterval(() => {
+opacity -= 0.05;
+trail.style.opacity = opacity;
+if (opacity <= 0) {
+clearInterval(interval);
+trail.remove();
+}
+}, 30);
+}
+
+animate() {
+requestAnimationFrame(() => this.animate());
+}
+}
+
+new MouseTrail();
+
+class ThreeBackground {
+constructor(canvas) {
+this.canvas = canvas;
+this.scene = new THREE.Scene();
+this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+this.renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+this.renderer.setSize(window.innerWidth, window.innerHeight);
+this.renderer.setPixelRatio(window.devicePixelRatio);
+this.camera.position.z = 3;
+
+this.createMesh();
+this.setupLights();
+this.animate();
+this.setupResize();
+window.addEventListener('mousemove', (e) => this.onMouseMove(e));
+}
+
+createMesh() {
+const geometry = new THREE.IcosahedronGeometry(1, 6);
+const material = new THREE.MeshPhongMaterial({
+color: 0x2563eb,
+wireframe: false,
+emissive: 0x0f172a,
+shininess: 100
+});
+this.mesh = new THREE.Mesh(geometry, material);
+this.scene.add(this.mesh);
+}
+
+setupLights() {
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+this.scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0x2563eb, 1);
+pointLight.position.set(10, 10, 10);
+this.scene.add(pointLight);
+}
+
+onMouseMove(e) {
+const x = (e.clientX / window.innerWidth) * 2 - 1;
+const y = -(e.clientY / window.innerHeight) * 2 + 1;
+this.mesh.rotation.x = y * 0.5;
+this.mesh.rotation.y = x * 0.5;
+}
+
+animate() {
+requestAnimationFrame(() => this.animate());
+this.mesh.rotation.x += 0.0003;
+this.mesh.rotation.y += 0.0005;
+this.renderer.render(this.scene, this.camera);
+}
+
+setupResize() {
+window.addEventListener('resize', () => {
+const width = window.innerWidth;
+const height = window.innerHeight;
+this.camera.aspect = width / height;
+this.camera.updateProjectionMatrix();
+this.renderer.setSize(width, height);
+});
+}
+}
+
+const canvas = document.getElementById('canvas-3d');
+new ThreeBackground(canvas);
 </script>
 
 </body>
