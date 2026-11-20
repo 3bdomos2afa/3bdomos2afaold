@@ -4,6 +4,10 @@
 
 The first version of my personal portfolio, built with Next.js. Kept here for reference. My current portfolio lives at [3bdomos2afa.github.io](https://3bdomos2afa.github.io).
 
+## Preview
+
+![Local production build preview](docs/preview.svg)
+
 ## Tech stack
 
 - Next.js, React, TypeScript
